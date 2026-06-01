@@ -1,18 +1,12 @@
-// ==========================================
-// 🚀 VARIÁVEIS GLOBAIS DE CONTROLE
-// ==========================================
 let idMetaParaDeletar = null;
 let tipoExclusao = '';
 
-// ==========================================
-// 🥞 RECIPIENTE DE NOTIFICAÇÕES (TOAST)
-// ==========================================
 function mostrarToast(mensagem) {
     const container = document.getElementById('toast-container');
     
     const toast = document.createElement('div');
     toast.classList.add('toast');
-    toast.innerText = mensagem; // Corrigido de 'message' para 'mensagem'
+    toast.innerText = message; // <--- O erro está bem aqui!
     
     container.appendChild(toast);
 
@@ -21,9 +15,6 @@ function mostrarToast(mensagem) {
     }, 3000);
 }
 
-// ==========================================
-// 🔄 GERENCIAMENTO DE TELAS
-// ==========================================
 function mostrarTela(tela) {
     const tLogin = document.getElementById('tela-login');
     const tCadastro = document.getElementById('tela-cadastro');
@@ -38,9 +29,6 @@ function mostrarTela(tela) {
     if (tela === 'planner') tPlanner.classList.remove('escondido');
 }
 
-// ==========================================
-// 📥 BUSCA DE METAS PENDENTES (LISTA PRINCIPAL)
-// ==========================================
 async function carregarMetas() {
     try {
         const usuarioId = localStorage.getItem('usuarioId');
@@ -72,9 +60,6 @@ async function carregarMetas() {
     }
 }
 
-// ==========================================
-// 📝 CRIAR NOVA META
-// ==========================================
 document.getElementById('form-meta').addEventListener('submit', async function(e) {
     e.preventDefault();
     const titulo = document.getElementById('input-meta').value;
@@ -107,9 +92,6 @@ document.getElementById('form-meta').addEventListener('submit', async function(e
     }
 });
 
-// ==========================================
-// ✓ CONCLUIR META
-// ==========================================
 async function concluirMeta(id, novoStatus, titulo) {
     try {
         const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${id}`, {
@@ -129,16 +111,12 @@ async function concluirMeta(id, novoStatus, titulo) {
     }
 }
 
-// ==========================================
-// ✕ GESTÃO DO MODAL DE EXCLUSÃO CUSTOMIZADO
-// ==========================================
 function deletarMeta(id) {
     idMetaParaDeletar = id;
     tipoExclusao = 'principal';
     document.getElementById('modal-confirmacao').classList.remove('escondido');
 }
 
-// Abre o modal vindo da tela de histórico
 function deletarMetaHistorico(id) {
     idMetaParaDeletar = id;
     tipoExclusao = 'historico';
@@ -151,7 +129,6 @@ function fecharModalConfirmacao() {
     document.getElementById('modal-confirmacao').classList.add('escondido');
 }
 
-// Escutadores dos botões internos do modal
 document.getElementById('btn-cancelar-excluir').addEventListener('click', fecharModalConfirmacao);
 
 document.getElementById('btn-confirmar-excluir').addEventListener('click', async function() {
@@ -180,9 +157,6 @@ document.getElementById('btn-confirmar-excluir').addEventListener('click', async
     }
 });
 
-// ==========================================
-// 👤 CADASTRO DE USUÁRIO
-// ==========================================
 document.getElementById('form-cadastro').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -209,9 +183,6 @@ document.getElementById('form-cadastro').addEventListener('submit', async functi
     }
 });
 
-// ==========================================
-// 🔑 LOGIN DE USUÁRIO
-// ==========================================
 document.getElementById('form-login').addEventListener('submit', async function(e) {
     e.preventDefault();
 
@@ -241,18 +212,12 @@ document.getElementById('form-login').addEventListener('submit', async function(
     }
 });
 
-// ==========================================
-// 🚪 LOGOUT
-// ==========================================
 function fazerLogout() {
     localStorage.removeItem('usuarioId'); 
     document.getElementById('form-login').reset();
     mostrarTela('login');
 }
 
-// ==========================================
-// 🏛️ MODAL DO HISTÓRICO (CONQUISTAS)
-// ==========================================
 function abrirModal() {
     document.getElementById('modal-historico').style.display = 'flex';
     carregarHistorico(); 
