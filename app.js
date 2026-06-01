@@ -19,7 +19,7 @@ async function carregarMetas() {
         const usuarioId = localStorage.getItem('usuarioId');
         
         // Envia o ID do usuário logado via header para filtrar no banco
-        const resposta = await fetch('http://localhost:3000/metas', {
+        const resposta = await fetch('https://planner-de-desejos.onrender.com/metas', {
             method: 'GET',
             headers: { 'usuario-id': usuarioId }
         });
@@ -57,7 +57,7 @@ document.getElementById('form-meta').addEventListener('submit', async function(e
     }
 
     try {
-        const resposta = await fetch('http://localhost:3000/metas', {
+        const resposta = await fetch('https://planner-de-desejos.onrender.com/metas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
@@ -80,7 +80,7 @@ document.getElementById('form-meta').addEventListener('submit', async function(e
 
 async function concluirMeta(id, novoStatus, titulo) {
     try {
-        const resposta = await fetch(`http://localhost:3000/metas/${id}`, {
+        const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${id}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ concluido: novoStatus }) 
@@ -101,7 +101,7 @@ async function deletarMeta(id) {
     if (!confirm("Tem certeza que deseja apagar esse desejo da sua lista?")) return;
 
     try {
-        const resposta = await fetch(`http://localhost:3000/metas/${id}`, {
+        const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${id}`, {
             method: 'DELETE'
         });
 
@@ -122,7 +122,7 @@ document.getElementById('form-cadastro').addEventListener('submit', async functi
     const senha = document.getElementById('cad-senha').value;
 
     try {
-        const resposta = await fetch('http://localhost:3000/usuario/cadastro', {
+        const resposta = await fetch('https://planner-de-desejos.onrender.com/usuario/cadastro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome, email, senha })
@@ -147,7 +147,7 @@ document.getElementById('form-login').addEventListener('submit', async function(
     const senha = document.getElementById('login-senha').value;
 
     try {
-        const resposta = await fetch('http://localhost:3000/usuario/login', {
+        const resposta = await fetch('https://planner-de-desejos.onrender.com/usuario/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, senha })
@@ -192,7 +192,7 @@ async function carregarHistorico() {
     try {
         const usuarioId = localStorage.getItem('usuarioId');
         
-        const resposta = await fetch('http://localhost:3000/metas', {
+        const resposta = await fetch('https://planner-de-desejos.onrender.com/metas', {
             method: 'GET',
             headers: { 'usuario-id': usuarioId }
         });
@@ -224,7 +224,7 @@ async function carregarHistorico() {
 async function deletarMetaHistorico(id) {
     if (!confirm("Remover essa conquista do histórico permanentemente?")) return;
     try {
-        const resposta = await fetch(`http://localhost:3000/metas/${id}`, { method: 'DELETE' });
+        const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${id}`, { method: 'DELETE' });
         if (resposta.ok) {
             carregarHistorico(); 
         }
