@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Desejos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="tela-login" class="box-container">
+        <h1>Transforme Sonhos em Metas</h1>
+        <p>Faça login ou crie sua conta para assumir o controle dos seus desejos e organizar suas próximas conquistas.</p>
+        
+        <form id="form-login" class="form-grupo">
+            <input type="email" id="login-email" placeholder="Seu e-mail" required>
+            <input type="password" id="login-senha" placeholder="Sua senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <div class="link-alternar">
+            Não tem conta? <span onclick="mostrarTela('cadastro')">Cadastre-se</span>
+        </div>
+    </div>
+
+    <div id="tela-cadastro" class="box-container escondido">
+        <h1>Comece Seu Planejamento</h1>
+        <p>Crie sua conta em segundos e comece a tirar seus planos do papel hoje mesmo.</p>
+        
+        <form id="form-cadastro" class="form-grupo">
+            <input type="text" id="cad-nome" placeholder="Seu nome" required>
+            <input type="email" id="cad-email" placeholder="Seu e-mail" required>
+            <input type="password" id="cad-senha" placeholder="Crie uma senha" required>
+            <button type="submit">Criar Minha Conta</button>
+        </form>
+        <div class="link-alternar">
+            Já tem uma conta? <span onclick="mostrarTela('login')">Fazer Login</span>
+        </div>
+    </div>
+
+    <div id="tela-planner" class="box-container escondido">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+            <span id="nome-usuario-logado" style="color: #00ff88; font-weight: 600; font-size: 0.9rem;">Olá, Usuário!</span>
+            <span onclick="fazerLogout()" style="color: rgba(255,255,255,0.4); font-size: 0.8rem; cursor: pointer; text-decoration: underline;">Sair</span>
+        </div>
+
+        <h1>Meus Desejos & Metas</h1>
+
+        <button id="btn-historico" onclick="abrirModal()" style="width: 100%; background-color: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 20px; padding: 10px; border-radius: 8px;">
+            🏆 Ver Minhas Conquistas
+        </button>
+        
+        <form id="form-meta" style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <input type="text" id="input-meta" placeholder="Ex: Comprar meu carro..." required style="flex: 1;">
+            <button type="submit" style="padding: 14px 20px;">+</button>
+        </form>
+
+        <div id="lista-metas" class="lista-metas"></div>
+    </div>
+
+    <div id="modal-historico" class="modal">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModal()">&times;</span>
+            <h2 style="color: #fff; font-size: 1.4rem; margin-top: 0;">🏆 Minhas Conquistas</h2>
+            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 20px;">Desejos que você realizou e tirou do papel!</p>
+            <div id="lista-conquistas" class="lista-metas" style="max-height: 250px;">
+                </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
