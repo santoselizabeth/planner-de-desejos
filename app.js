@@ -1,9 +1,12 @@
+let idMetaParaDeletar = null;
+let tipoExclusao = '';
+
 function mostrarToast(mensagem) {
     const container = document.getElementById('toast-container');
     
     const toast = document.createElement('div');
     toast.classList.add('toast');
-    toast.innerText = mensagem;
+    toast.innerText = message;
     
     container.appendChild(toast);
 
@@ -108,22 +111,52 @@ async function concluirMeta(id, novoStatus, titulo) {
     }
 }
 
-async function deletarMeta(id) {
-    if (!confirm("Tem certeza que deseja apagar esse desejo da sua lista?")) return;
+
+function deletarMeta(id) {
+    idMetaParaDeletar = id;
+    tipoExclusao = 'principal';
+    document.getElementById('modal-confirmacao').classList.remove('escondido');
+}
+
+function deletarMetaHistorico(id) {
+    idMetaParaDeletar = id;
+    tipoExclusao = 'historico';
+    document.getElementById('modal-confirmacao').classList.remove('escondido');
+}
+
+function fecharModalConfirmacao() {
+    idMetaParaDeletar = null;
+    tipoExclusao = '';
+    document.getElementById('modal-confirmacao').classList.add('escondido');
+}
+
+document.getElementById('btn-cancelar-excluir').addEventListener('click', fecharModalConfirmacao);
+
+document.getElementById('btn-confirmar-excluir').addEventListener('click', async function() {
+    if (!idMetaParaDeletar) return;
 
     try {
-        const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${id}`, {
+        const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${idMetaParaDeletar}`, {
             method: 'DELETE'
         });
 
         if (resposta.ok) {
-            carregarMetas();
+            mostrarToast("Desejo removido com sucesso!");
+            
+            if (tipoExclusao === 'principal') {
+                carregarMetas();
+            } else if (tipoExclusao === 'historico') {
+                carregarHistorico();
+            }
+        } else {
+            mostrarToast("Erro ao tentar deletar o desejo.");
         }
     } catch (error) {
         console.error("Erro ao deletar meta:", error);
+    } finally {
+        fecharModalConfirmacao();
     }
-}
-
+});
 
 document.getElementById('form-cadastro').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -180,13 +213,11 @@ document.getElementById('form-login').addEventListener('submit', async function(
     }
 });
 
-
 function fazerLogout() {
     localStorage.removeItem('usuarioId'); 
     document.getElementById('form-login').reset();
     mostrarTela('login');
 }
-
 function abrirModal() {
     document.getElementById('modal-historico').style.display = 'flex';
     carregarHistorico(); 
@@ -226,17 +257,5 @@ async function carregarHistorico() {
         });
     } catch (error) {
         console.error("Erro ao carregar histórico:", error);
-    }
-}
-
-async function deletarMetaHistorico(id) {
-    if (!confirm("Remover essa conquista do histórico permanentemente?")) return;
-    try {
-        const resposta = await fetch(`https://planner-de-desejos.onrender.com/metas/${id}`, { method: 'DELETE' });
-        if (resposta.ok) {
-            carregarHistorico(); 
-        }
-    } catch (error) {
-        console.error(error);
     }
 }
