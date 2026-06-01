@@ -6,7 +6,7 @@ function mostrarToast(mensagem) {
     
     const toast = document.createElement('div');
     toast.classList.add('toast');
-    toast.innerText = message; // <--- O erro está bem aqui!
+    toast.innerText = mensagem; 
     
     container.appendChild(toast);
 
