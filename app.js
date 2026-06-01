@@ -1,4 +1,16 @@
+function mostrarToast(mensagem) {
+    const container = document.getElementById('toast-container');
+    
+    const toast = document.createElement('div');
+    toast.classList.add('toast');
+    toast.innerText = mensagem;
+    
+    container.appendChild(toast);
 
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
 
 function mostrarTela(tela) {
     const tLogin = document.getElementById('tela-login');
@@ -18,7 +30,6 @@ async function carregarMetas() {
     try {
         const usuarioId = localStorage.getItem('usuarioId');
         
-        // Envia o ID do usuário logado via header para filtrar no banco
         const resposta = await fetch('https://planner-de-desejos.onrender.com/metas', {
             method: 'GET',
             headers: { 'usuario-id': usuarioId }
@@ -52,7 +63,7 @@ document.getElementById('form-meta').addEventListener('submit', async function(e
     const usuarioId = localStorage.getItem('usuarioId');
 
     if (titulo.trim() === "") {
-        alert("Por favor, adicione um desejo à sua Lista! O campo não pode ficar vazio. 📝");
+        mostrarToast("Por favor, adicione um desejo à sua Lista! O campo não pode ficar vazio. 📝");
         return;
     }
 
@@ -62,16 +73,16 @@ document.getElementById('form-meta').addEventListener('submit', async function(e
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 titulo: titulo,
-                usuarioId: usuarioId // Envia o ID do dono da meta
+                usuarioId: usuarioId
             }) 
         });
 
         if (resposta.ok) {
-            alert("Desejo adicionado com sucesso a sua Lista! 🚀");
+            mostrarToast("Desejo adicionado com sucesso a sua Lista! 🚀");
             document.getElementById('input-meta').value = ""; 
             carregarMetas(); 
         } else {
-            alert("Houve um erro no servidor ao tentar salvar seu desejo.");
+            mostrarToast("Houve um erro no servidor ao tentar salvar seu desejo.");
         }
     } catch (error) {
         console.error("Erro ao salvar meta:", error);
@@ -88,7 +99,7 @@ async function concluirMeta(id, novoStatus, titulo) {
 
         if (resposta.ok) {
             if (novoStatus === true) {
-                alert(`Fico feliz em saber que você concluuiu o desejo: ${titulo}! ✨🥳`);
+                mostrarToast(`Fico feliz em saber que você concluuiu o desejo: ${titulo}! ✨🥳`);
             }
             carregarMetas(); 
         }
@@ -129,11 +140,11 @@ document.getElementById('form-cadastro').addEventListener('submit', async functi
         });
 
         if (resposta.ok) {
-            alert("Conta criada com sucesso! 🎉 Agora faça o seu login.");
+            mostrarToast("Conta criada com sucesso! 🎉 Agora faça o seu login.");
             document.getElementById('form-cadastro').reset(); 
             mostrarTela('login'); 
         } else {
-            alert("Erro ao criar conta. Verifique os dados ou tente outro e-mail.");
+            mostrarToast("Erro ao criar conta. Verifique os dados ou tente outro e-mail.");
         }
     } catch (error) {
         console.error("Erro na requisição de cadastro:", error);
@@ -156,28 +167,25 @@ document.getElementById('form-login').addEventListener('submit', async function(
         const dados = await resposta.json();
 
         if (resposta.ok) {
-            alert(dados.mensagem);
-        
+            mostrarToast(dados.mensagem);
             localStorage.setItem('usuarioId', dados.usuario.id);
-            
             document.getElementById('nome-usuario-logado').innerText = `Olá, ${dados.usuario.nome} ✨`;
-            
             mostrarTela('planner'); 
             carregarMetas(); 
         } else {
-            alert(dados.erro); 
+            mostrarToast(dados.erro); 
         }
     } catch (error) {
         console.error("Erro no login:", error);
     }
 });
 
+
 function fazerLogout() {
-    localStorage.removeItem('usuarioId'); // Limpa o ID do usuário ao deslogar
+    localStorage.removeItem('usuarioId'); 
     document.getElementById('form-login').reset();
     mostrarTela('login');
 }
-
 
 function abrirModal() {
     document.getElementById('modal-historico').style.display = 'flex';
